@@ -9,17 +9,19 @@ var is_attacking = false
 var is_sliding = false
 var is_slide_jumping = false
 var has_jade_dagger = false
+var is_ground_pounding = false
 var last_direction
 
-@export var jump_height: float
-@export var jump_time_to_peak: float
-@export var jump_time_to_descent: float
+var jump_height: float = 53
+var jump_time_to_peak: float = 0.35
+var jump_time_to_descent: float = 0.28
 
 @onready var jump_velocity: float = ((2.0 * jump_height) / jump_time_to_peak) * -1
 @onready var jump_gravity: float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1
 @onready var fall_gravity: float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1
 
-@onready var animated_sprite = $AnimatedSprite2D
+@onready var sprite_animation = $AnimationPlayer
+@onready var sprite_2d = $Sprite2D
 @onready var attack_animation_timer = $AttackAnimationTimer
 @onready var attack_timer = $AttackTimer
 @onready var jump_buffer_timer = $JumpBufferTimer
@@ -31,7 +33,7 @@ func _physics_process(delta):
 	velocity.y += get_gravity() * delta
 
 	# Handle jump.
-	if is_on_floor() or coyote_timer.time_left > 0:
+	if (is_on_floor() or coyote_timer.time_left > 0):
 		if Input.is_action_just_pressed("jump"):
 			jump()
 	
@@ -46,15 +48,15 @@ func _physics_process(delta):
 	
 	# Flip the sprite
 	if direction > 0:
-		animated_sprite.flip_h = false
+		sprite_2d.flip_h = false
 	
 	elif direction < 0:
-		animated_sprite.flip_h = true
+		sprite_2d.flip_h = true
 	
-	if animated_sprite.flip_h == false:
+	if sprite_2d.flip_h == false:
 		last_direction = 1
 	
-	elif animated_sprite.flip_h == true:
+	elif sprite_2d.flip_h == true:
 		last_direction = -1
 	
 	# Flip the attack collision
@@ -67,26 +69,23 @@ func _physics_process(delta):
 	if is_on_floor() and is_attack_playing == false:
 		
 		if direction == 0:
-			animated_sprite.play("idle")
+			sprite_animation.play("idle")
 		
-		else:
-			animated_sprite.play("run")
+		elif Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+			sprite_animation.play("run")
 		
 	else:
 		if is_attack_playing == false:
-			animated_sprite.play("jump")
+			sprite_animation.play("jump")
 	
 	if has_jade_dagger == true:
-		if Input.is_action_just_pressed("attack") and is_attacking == false and !is_on_floor():
+		if Input.is_action_just_pressed("attack") and !is_attacking and !is_on_floor():
 			jade_aerial_attack()
 		
-		elif Input.is_action_just_pressed("attack") and is_attacking == false and Input.is_action_pressed("move_left"):
+		elif Input.is_action_just_pressed("attack") and !is_attacking and (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
 			jade_running_attack()
 			
-		elif Input.is_action_just_pressed("attack") and is_attacking == false and Input.is_action_pressed("move_right"):
-			jade_running_attack()
-			
-		elif Input.is_action_just_pressed("attack") and is_attacking == false and is_on_floor():
+		elif Input.is_action_just_pressed("attack") and !is_attacking and is_on_floor():
 			jade_grounded_attack()
 			
 	
@@ -94,21 +93,22 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("slide") and is_on_floor():
 		slide_jump_timer.start()
 
-	if Input.is_action_pressed("slide") and is_on_floor():
+	if Input.is_action_pressed("slide"):
 		if Input.is_action_pressed("jump") and slide_jump_timer.time_left > 0 and !is_slide_jumping:
 			jump()
-			velocity.x = (SPEED + 600) * last_direction
+			velocity.x = (SPEED + 330) * last_direction
 			is_slide_jumping = true
 		
-		else:
+		elif is_on_floor():
 			velocity.x = (SPEED + 100) * last_direction
+			sprite_animation.play("slide")
 
-	elif Input.is_action_pressed("slide") and !is_on_floor() and is_sliding == true:
+	elif Input.is_action_pressed("slide") and !is_on_floor() and is_sliding:
 		velocity.x = (SPEED + 100) * last_direction
 		is_sliding = true
 		slide_jump_timer.start()
 
-	elif Input.is_action_just_pressed("slide") and !is_on_floor() and is_sliding == false:
+	elif Input.is_action_just_pressed("slide") and !is_on_floor() and !is_sliding:
 		is_sliding = false
 
 	elif !Input.is_action_pressed("slide"):
@@ -156,7 +156,7 @@ func jump():
 
 
 func jade_grounded_attack():
-	animated_sprite.play("attack")
+	sprite_animation.play("attack")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
@@ -164,7 +164,7 @@ func jade_grounded_attack():
 	attack_timer.start()
 
 func jade_aerial_attack(): 
-	animated_sprite.play("attack_jump")
+	sprite_animation.play("attack_jump")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
@@ -172,7 +172,7 @@ func jade_aerial_attack():
 	attack_timer.start()
 
 func jade_running_attack():
-	animated_sprite.play("attack_run")
+	sprite_animation.play("attack_run")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
