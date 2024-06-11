@@ -90,16 +90,15 @@ func _physics_process(delta):
 			
 	
 	# Sliding
-	if Input.is_action_just_pressed("slide") and is_on_floor():
+	if Input.is_action_pressed("slide") and is_on_floor():
 		slide_jump_timer.start()
-
-	if Input.is_action_pressed("slide"):
+		
 		if Input.is_action_pressed("jump") and slide_jump_timer.time_left > 0 and !is_slide_jumping:
 			jump()
-			velocity.x = (SPEED + 330) * last_direction
+			velocity.x = (SPEED + 350) * last_direction
 			is_slide_jumping = true
 		
-		elif is_on_floor():
+		else:
 			velocity.x = (SPEED + 100) * last_direction
 			sprite_animation.play("slide")
 
