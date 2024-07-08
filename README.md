@@ -1,6 +1,6 @@
 # yo
 
-## my name is cut_the_freakin_steak and ive wanted to make a video game ever since i first played one.
+## i wanna make video game
 
 and i guess this is it.
 
