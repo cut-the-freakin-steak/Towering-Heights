@@ -23,11 +23,11 @@ var jump_time_to_descent: float = 0.28
 
 @onready var sprite_animation = $AnimationPlayer
 @onready var sprite_2d = $Sprite2D
-@onready var attack_animation_timer = $AttackAnimationTimer
-@onready var attack_timer = $AttackTimer
-@onready var jump_buffer_timer = $JumpBufferTimer
-@onready var slide_jump_timer = $SlideJumpTimer
-@onready var coyote_timer = $CoyoteTimer
+@onready var attack_animation_timer = %AttackAnimationTimer
+@onready var attack_timer = %AttackTimer
+@onready var jump_buffer_timer = %JumpBufferTimer
+@onready var slide_jump_timer = %SlideJumpTimer
+@onready var coyote_timer = %CoyoteTimer
 
 func _physics_process(delta):
 	# Add the gravity.

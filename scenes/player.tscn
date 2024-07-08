@@ -776,6 +776,7 @@ size = Vector2(13, 28)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
+position = Vector2(1, 0)
 collision_layer = 2
 script = ExtResource("1_h0v4v")
 
@@ -808,22 +809,27 @@ script = ExtResource("11_pocc3")
 player = NodePath("../..")
 
 [node name="AttackAnimationTimer" type="Timer" parent="StateMachine"]
+unique_name_in_owner = true
 wait_time = 0.21
 one_shot = true
 
 [node name="AttackTimer" type="Timer" parent="StateMachine"]
+unique_name_in_owner = true
 wait_time = 0.5
 one_shot = true
 
 [node name="JumpBufferTimer" type="Timer" parent="StateMachine"]
+unique_name_in_owner = true
 wait_time = 0.1
 one_shot = true
 
 [node name="SlideJumpTimer" type="Timer" parent="StateMachine"]
+unique_name_in_owner = true
 wait_time = 0.15
 one_shot = true
 
 [node name="CoyoteTimer" type="Timer" parent="StateMachine"]
+unique_name_in_owner = true
 wait_time = 0.13
 one_shot = true
 

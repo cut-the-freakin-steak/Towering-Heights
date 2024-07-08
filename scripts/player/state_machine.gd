@@ -10,6 +10,10 @@ func _ready():
 		if child is State:
 			states[child.name.to_lower()] = child
 			child.transitioned.connect(change_state)
+	
+	if initial_state:
+		initial_state.enter()
+		current_state = initial_state
 
 func _process(delta):
 	if current_state:
