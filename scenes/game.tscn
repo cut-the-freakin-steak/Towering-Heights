@@ -415,7 +415,7 @@ sources/0 = SubResource("TileSetAtlasSource_yqg8g")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_uwwo1"]
 
-[node name="Game" type="Node2D"]
+[node name="StartingArea" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
