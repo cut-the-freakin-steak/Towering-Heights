@@ -807,6 +807,26 @@ player = NodePath("../..")
 script = ExtResource("11_pocc3")
 player = NodePath("../..")
 
+[node name="AttackAnimationTimer" type="Timer" parent="StateMachine"]
+wait_time = 0.21
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="StateMachine"]
+wait_time = 0.5
+one_shot = true
+
+[node name="JumpBufferTimer" type="Timer" parent="StateMachine"]
+wait_time = 0.1
+one_shot = true
+
+[node name="SlideJumpTimer" type="Timer" parent="StateMachine"]
+wait_time = 0.15
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="StateMachine"]
+wait_time = 0.13
+one_shot = true
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, -7)
@@ -830,26 +850,6 @@ position = Vector2(13.5, -2)
 shape = SubResource("RectangleShape2D_aop5m")
 disabled = true
 
-[node name="AttackAnimationTimer" type="Timer" parent="."]
-wait_time = 0.21
-one_shot = true
-
-[node name="AttackTimer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-
-[node name="JumpBufferTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
-[node name="SlideJumpTimer" type="Timer" parent="."]
-wait_time = 0.15
-one_shot = true
-
-[node name="CoyoteTimer" type="Timer" parent="."]
-wait_time = 0.13
-one_shot = true
-
-[connection signal="timeout" from="AttackAnimationTimer" to="." method="_on_attack_animation_timer_timeout"]
-[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
-[connection signal="timeout" from="SlideJumpTimer" to="." method="_on_slide_jump_timer_timeout"]
+[connection signal="timeout" from="StateMachine/AttackAnimationTimer" to="." method="_on_attack_animation_timer_timeout"]
+[connection signal="timeout" from="StateMachine/AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="StateMachine/SlideJumpTimer" to="." method="_on_slide_jump_timer_timeout"]
