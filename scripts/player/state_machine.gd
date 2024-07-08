@@ -38,5 +38,3 @@ func change_state(source_state, new_state_name):
 	new_state.enter()
 
 	current_state = new_state
-
-
