@@ -14,6 +14,7 @@ var jump_time_to_descent: float = 0.28
 @onready var coyote_timer = %CoyoteTimer
 @onready var jump_buffer_timer = %JumpBufferTimer
 
+
 func physics_update(_delta):
 	if player.is_on_floor() or coyote_timer.time_left > 0:
 		jump()

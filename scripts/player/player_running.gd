@@ -2,21 +2,29 @@ extends State
 class_name PlayerRunning
 
 @export var player: CharacterBody2D
+@export var animator: AnimatedSprite2D
+
+@onready var jump_buffer_timer = %JumpBufferTimer
 
 func physics_update(_delta):
-    # Handle input.
+	# Handle input.
     var input_direction = input()
     if input_direction != Vector2.ZERO:
         accelerate(input_direction)
+        if player.is_on_floor():
+            animator.play("run")
+        
+        else:
+            animator.play("jump")
 	
-    # Deceleration
+	# Deceleration
     else:
         add_friction()
 
     if player.velocity.x == 0:
         transitioned.emit(self, "idle")
 
-    if Input.is_action_just_pressed("jump"):
+    if Input.is_action_just_pressed("jump") or (jump_buffer_timer.time_left > 0 and player.is_on_floor()):
         transitioned.emit(self, "jumping")
 
 func accelerate(direction):

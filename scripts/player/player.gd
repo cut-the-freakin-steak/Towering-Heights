@@ -21,6 +21,7 @@ var jump_time_to_descent: float = 0.28
 @onready var jump_gravity: float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1
 @onready var fall_gravity: float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1
 
+@onready var animated_sprite = $AnimatedSprite2D
 @onready var sprite_animation = $AnimationPlayer
 @onready var sprite_2d = $Sprite2D
 @onready var attack_animation_timer = %AttackAnimationTimer
@@ -33,7 +34,7 @@ func _physics_process(delta):
 	# Add the gravity.
 	velocity.y += get_gravity() * delta
 
-	# Handle jump.
+	# Handle jump buffer
 	if Input.is_action_just_pressed("jump"):
 		jump_buffer_timer.start()
 	
@@ -42,9 +43,11 @@ func _physics_process(delta):
 	# Flip the sprite
 	if direction > 0:
 		sprite_2d.flip_h = false
+		animated_sprite.flip_h = false
 	
 	elif direction < 0:
 		sprite_2d.flip_h = true
+		animated_sprite.flip_h = true
 	
 	if sprite_2d.flip_h == false:
 		last_direction = 1
@@ -57,19 +60,7 @@ func _physics_process(delta):
 		get_node("JadeDaggerCollision").set_scale(Vector2(1, 1))
 	elif Input.is_action_pressed("move_left"): 
 		get_node("JadeDaggerCollision").set_scale(Vector2(-1, 1))
-	
-	# Play animations
-	if is_on_floor() and is_attack_playing == false:
-		
-		if direction == 0:
-			sprite_animation.play("idle")
-		
-		elif Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
-			sprite_animation.play("run")
-		
-	else:
-		if is_attack_playing == false:
-			sprite_animation.play("jump")
+
 	
 	if has_jade_dagger == true:
 		if Input.is_action_just_pressed("attack") and !is_attacking and !is_on_floor():
