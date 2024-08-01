@@ -4,4 +4,4 @@
 
 and i guess this is it.
 
-im currently still working on it because its a steaming file of not so family friendly word.
+im currently still working on it because its a steaming pile of not so family friendly word.
