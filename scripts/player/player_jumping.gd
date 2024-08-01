@@ -18,15 +18,15 @@ var jump_time_to_descent: float = 0.28
 func physics_update(_delta):
 	if player.is_on_floor() or coyote_timer.time_left > 0:
 		jump()
+
+	if Input.is_action_just_pressed("jump") or (jump_buffer_timer.time_left > 0 and player.is_on_floor()):
+		transitioned.emit(self, "jumping")
 	
 	if player.is_on_floor():
 		if jump_buffer_timer.time_left > 0:
 			jump()
 		
 		transitioned.emit(self, "idle")
-	
-	# if player.velocity.y == 0:
-		# transitioned.emit(self, "idle")
 	
 	if player.velocity.x != 0:
 		transitioned.emit(self, "running")
