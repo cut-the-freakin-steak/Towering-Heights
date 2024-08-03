@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtvv1uqmitm8g"]
+[gd_scene load_steps=18 format=3 uid="uid://dtvv1uqmitm8g"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_04s42"]
 [ext_resource type="PackedScene" uid="uid://dtyye3m4y17qo" path="res://scenes/player.tscn" id="1_an2mv"]
@@ -8,8 +8,17 @@
 [ext_resource type="PackedScene" uid="uid://dlj3ho5oefvxs" path="res://scenes/coin.tscn" id="4_uj363"]
 [ext_resource type="PackedScene" uid="uid://bmygqr2uhnitq" path="res://scenes/killzone.tscn" id="5_7w8da"]
 [ext_resource type="PackedScene" uid="uid://byof51l88ypop" path="res://scenes/jade_dagger_pickup.tscn" id="5_8888x"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="5_ekeio"]
 [ext_resource type="PackedScene" uid="uid://4slguq16x67g" path="res://scenes/slime.tscn" id="6_0e6lf"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_oiap1"]
 [ext_resource type="FontFile" uid="uid://8tocnlqgb3t8" path="res://assets/fonts/PixelOperator8.ttf" id="8_st0pa"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="13_pmm7r"]
+
+[sub_resource type="Resource" id="Resource_pcsqp"]
+script = ExtResource("6_oiap1")
+duration = 1.0
+transition = 0
+ease = 2
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yqg8g"]
 texture = ExtResource("1_e3qwm")
@@ -432,6 +441,27 @@ theme_override_font_sizes/font_size = 8
 text = "You collected X coins"
 autowrap_mode = 2
 
+[node name="Camera Stuff" type="Node" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="Camera Stuff"]
+position = Vector2(-30, 39)
+zoom = Vector2(4, 4)
+limit_bottom = 120
+
+[node name="PhantomCameraHost" type="Node" parent="Camera Stuff/Camera2D"]
+script = ExtResource("13_pmm7r")
+
+[node name="PhantomCamera2D" type="Node2D" parent="Camera Stuff" node_paths=PackedStringArray("follow_target")]
+position = Vector2(-30, 39)
+script = ExtResource("5_ekeio")
+follow_mode = 2
+follow_target = NodePath("../../Player")
+zoom = Vector2(4, 4)
+tween_resource = SubResource("Resource_pcsqp")
+follow_damping = true
+follow_damping_value = Vector2(0.25, 0.25)
+limit_bottom = 120
+
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-78, 1)
 tile_set = SubResource("TileSet_4rdwf")
@@ -444,11 +474,6 @@ layer_1/tile_data = PackedInt32Array(196610, 0, 0, 196611, 0, 0, 262146, 0, 1, 3
 [node name="Player" parent="." instance=ExtResource("1_an2mv")]
 unique_name_in_owner = true
 position = Vector2(-30, 44)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(4, 4)
-limit_bottom = 120
-position_smoothing_enabled = true
 
 [node name="JadeDaggerPickup" parent="." instance=ExtResource("5_8888x")]
 position = Vector2(490, -122)
@@ -474,7 +499,7 @@ position = Vector2(170, 67)
 position = Vector2(42, -45)
 
 [node name="Coin5" parent="Coins" instance=ExtResource("4_uj363")]
-position = Vector2(442, 34)
+position = Vector2(418, 34)
 
 [node name="Coin6" parent="Coins" instance=ExtResource("4_uj363")]
 position = Vector2(686, -26)

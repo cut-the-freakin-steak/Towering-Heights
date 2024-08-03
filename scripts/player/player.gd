@@ -22,7 +22,7 @@ var jump_time_to_descent: float = 0.28
 @onready var fall_gravity: float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1
 
 @onready var animated_sprite = $AnimatedSprite2D
-@onready var sprite_animation = $AnimationPlayer
+@onready var animator = $AnimationPlayer
 @onready var sprite_2d = $Sprite2D
 @onready var attack_animation_timer = %AttackAnimationTimer
 @onready var attack_timer = %AttackTimer
@@ -31,14 +31,14 @@ var jump_time_to_descent: float = 0.28
 @onready var coyote_timer = %CoyoteTimer
 
 func _physics_process(delta):
+	var direction = Input.get_axis("move_left", "move_right")
+	
 	# Add the gravity.
 	velocity.y += get_gravity() * delta
 
 	# Handle jump buffer
 	if Input.is_action_just_pressed("jump"):
 		jump_buffer_timer.start()
-	
-	var direction = Input.get_axis("move_left", "move_right")
 	
 	# Flip the sprite
 	if direction > 0:
@@ -77,10 +77,6 @@ func _physics_process(delta):
 	if (Input.is_action_just_pressed("slide") and is_on_floor()) or (Input.is_action_just_pressed("slide") and !is_on_floor() and is_sliding):
 		slide_jump_timer.start()
 
-	elif Input.is_action_pressed("slide") and !is_on_floor() and is_sliding:
-		velocity.x = (SPEED + 100) * last_direction
-		is_sliding = true
-
 	elif Input.is_action_just_pressed("slide") and !is_on_floor() and !is_sliding:
 		is_sliding = false
 
@@ -107,7 +103,7 @@ func get_gravity() -> float:
 
 
 func jade_grounded_attack():
-	sprite_animation.play("attack")
+	animator.play("attack")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
@@ -115,7 +111,7 @@ func jade_grounded_attack():
 	attack_timer.start()
 
 func jade_aerial_attack(): 
-	sprite_animation.play("attack_jump")
+	animator.play("attack_jump")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
@@ -123,7 +119,7 @@ func jade_aerial_attack():
 	attack_timer.start()
 
 func jade_running_attack():
-	sprite_animation.play("attack_run")
+	animator.play("attack_run")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true

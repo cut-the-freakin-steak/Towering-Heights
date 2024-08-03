@@ -2,6 +2,7 @@ extends State
 class_name PlayerJumping
 
 @export var player: CharacterBody2D
+@export var animator: AnimationPlayer
 
 var jump_height: float = 53
 var jump_time_to_peak: float = 0.35
@@ -14,23 +15,21 @@ var jump_time_to_descent: float = 0.28
 @onready var coyote_timer = %CoyoteTimer
 @onready var jump_buffer_timer = %JumpBufferTimer
 
+func update(_delta):
+	animator.play("jump")
 
 func physics_update(_delta):
-	if player.is_on_floor() or coyote_timer.time_left > 0:
-		jump()
-
-	if Input.is_action_just_pressed("jump") or (jump_buffer_timer.time_left > 0 and player.is_on_floor()):
-		transitioned.emit(self, "jumping")
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+		transitioned.emit(self, "running")
 	
-	if player.is_on_floor():
-		if jump_buffer_timer.time_left > 0:
-			jump()
-		
+	else:
+		player.velocity.x = 0
+	
+	if player.velocity.x == 0 and player.velocity.y == 0 and player.is_on_floor() and jump_buffer_timer.time_left == 0:
 		transitioned.emit(self, "idle")
 	
-	if player.velocity.x != 0:
-		transitioned.emit(self, "running")
-
+	elif player.is_on_floor() or coyote_timer.time_left > 0:
+		jump()
 
 
 func get_gravity() -> float:
