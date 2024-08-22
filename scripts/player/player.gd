@@ -34,12 +34,13 @@ func _physics_process(delta):
 	var direction = Input.get_axis("move_left", "move_right")
 	
 	# Add the gravity.
-	velocity.y += get_gravity() * delta
+	velocity.y += get_new_gravity() * delta
+	
 
 	# Handle jump buffer
 	if Input.is_action_just_pressed("jump"):
 		jump_buffer_timer.start()
-	
+
 	# Flip the sprite
 	if direction > 0:
 		sprite_2d.flip_h = false
@@ -94,7 +95,7 @@ func _physics_process(delta):
 		coyote_timer.start()
 
 
-func get_gravity() -> float:
+func get_new_gravity() -> float:
 	if velocity.y < 0.0:
 		return jump_gravity
 	
