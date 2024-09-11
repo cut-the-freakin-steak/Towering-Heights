@@ -809,7 +809,7 @@ _data = {
 radius = 5.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aop5m"]
-size = Vector2(13, 28)
+size = Vector2(13, 26)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
@@ -834,7 +834,7 @@ shape = SubResource("CircleShape2D_cg0vj")
 [node name="JadeDaggerCollision" type="Area2D" parent="." groups=["sword"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="JadeDaggerCollision"]
-position = Vector2(13.5, -2)
+position = Vector2(13.5, -4)
 shape = SubResource("RectangleShape2D_aop5m")
 disabled = true
 
