@@ -2,7 +2,8 @@ extends State
 class_name PlayerJumping
 
 @export var player: CharacterBody2D
-@export var animator: AnimationPlayer
+@export var animated_sprite: AnimatedSprite2D
+# @export var animator: AnimationPlayer
 
 var jump_height: float = 53
 var jump_time_to_peak: float = 0.35
@@ -16,7 +17,7 @@ var jump_time_to_descent: float = 0.28
 @onready var jump_buffer_timer = %JumpBufferTimer
 
 func update(_delta):
-	animator.play("jump")
+	animated_sprite.play("jump")
 
 func physics_update(_delta):
 	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):

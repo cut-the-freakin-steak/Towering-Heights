@@ -21,8 +21,8 @@ var jump_time_to_descent: float = 0.28
 @onready var jump_gravity: float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1
 @onready var fall_gravity: float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1
 
+# @onready var animator = $AnimationPlayer
 @onready var animated_sprite = $AnimatedSprite2D
-@onready var animator = $AnimationPlayer
 @onready var sprite_2d = $Sprite2D
 @onready var attack_animation_timer = %AttackAnimationTimer
 @onready var attack_timer = %AttackTimer
@@ -43,17 +43,17 @@ func _physics_process(delta):
 
 	# Flip the sprite
 	if direction > 0:
-		sprite_2d.flip_h = false
+		animated_sprite.flip_h = false
 		animated_sprite.flip_h = false
 	
 	elif direction < 0:
-		sprite_2d.flip_h = true
+		animated_sprite.flip_h = true
 		animated_sprite.flip_h = true
 	
-	if sprite_2d.flip_h == false:
+	if animated_sprite.flip_h == false:
 		last_direction = 1
 	
-	elif sprite_2d.flip_h == true:
+	elif animated_sprite.flip_h == true:
 		last_direction = -1
 	
 	# Flip the attack collision
@@ -104,7 +104,7 @@ func get_new_gravity() -> float:
 
 
 func jade_grounded_attack():
-	animator.play("attack")
+	animated_sprite.play("attack")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
@@ -112,7 +112,7 @@ func jade_grounded_attack():
 	attack_timer.start()
 
 func jade_aerial_attack(): 
-	animator.play("attack_jump")
+	animated_sprite.play("attack_jump")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true
@@ -120,7 +120,7 @@ func jade_aerial_attack():
 	attack_timer.start()
 
 func jade_running_attack():
-	animator.play("attack_run")
+	animated_sprite.play("attack_run")
 	$JadeDaggerCollision/CollisionShape2D.disabled = false
 	is_attack_playing = true
 	is_attacking = true

@@ -2,7 +2,8 @@ extends State
 class_name PlayerSlide
 
 @export var player: CharacterBody2D
-@export var animator: AnimationPlayer
+@export var animated_sprite: AnimatedSprite2D
+# @export var animator: AnimationPlayer
 
 @onready var slide_jump_timer = %SlideJumpTimer
 
@@ -10,7 +11,7 @@ const SLIDE_SPEED = 220.0
 const SLIDE_JUMP_SPEED = 470
 
 func update(_delta):
-	animator.play("slide")
+	animated_sprite.play("slide")
 
 func physics_update(_delta):
 	if Input.is_action_pressed("slide"):

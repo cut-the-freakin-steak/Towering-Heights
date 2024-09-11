@@ -2,7 +2,8 @@ extends State
 class_name PlayerRunning
 
 @export var player: CharacterBody2D
-@export var animator: AnimationPlayer
+@export var animated_sprite: AnimatedSprite2D
+# @export var animator: AnimationPlayer
 
 @onready var jump_buffer_timer = %JumpBufferTimer
 
@@ -12,10 +13,10 @@ func physics_update(_delta):
 	if input_direction != Vector2.ZERO:
 		accelerate(input_direction)
 		if player.is_on_floor():
-			animator.play("run")
+			animated_sprite.play("run")
 		
 		else:
-			animator.play("jump")
+			animated_sprite.play("jump")
 	
 	# Deceleration
 	else:
