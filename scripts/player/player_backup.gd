@@ -143,7 +143,7 @@ func input() -> Vector2:
 	input_direction.x = Input.get_axis("move_left", "move_right")
 	return input_direction
 
-func get_gravity() -> float:
+func get_new_gravity() -> float:
 	if velocity.y < 0.0:
 		return jump_gravity
 	
